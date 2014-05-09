@@ -188,6 +188,15 @@ describe Pickle::Session do
       find_model('a user', 'hair: "pink"').should == user
     end
 
+    it "should return nil if name not found" do
+         find_model('a user "Foo"').should == nil
+    end
+    it "should return stored model if named factory is found" do
+      models_by_name_hash = {"fred" => user}
+      should_receive(:models_by_name).with("user").once.ordered.and_return(models_by_name_hash)
+      find_model('a user "Fred"').should == user
+    end
+
     describe "after find," do
       before { find_model('a user', 'hair: "pink"') }
 
